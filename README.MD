@@ -14,7 +14,7 @@ A custom font is used inside a texture pack to get the emojis. Each emoji is a c
 | `/emoji list` | List of all emojis and their names |
 
 ## TODO:
-[x] Make basic plugin
-[x] Find emoji names in the Minecraft chat
-[ ] Make the custom texture pack
-[ ] Replace chat in text with emoji
+- [x] Make basic plugin
+- [x] Find emoji names in the Minecraft chat
+- [x] Make the custom texture pack
+- [x] Replace chat in text with emoji
