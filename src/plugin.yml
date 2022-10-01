@@ -1,0 +1,8 @@
+main: net.mtmb.emoji.Main
+name: Emoji
+version: 1.0
+api-version: 1.17
+author: Max
+
+commands:
+  emoji:
