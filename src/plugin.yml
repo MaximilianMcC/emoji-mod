@@ -1,0 +1,9 @@
+name: Emoji
+version: 3.0.0
+description: A simple plugin that allows people to use Emojis in chat.
+main: net.maxtheminerboy.emoji.Main
+api-version: 1.17
+commands:
+  emoji:
+    description: Gives info about this plugin
+    usage: /emoji
