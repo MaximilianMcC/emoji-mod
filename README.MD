@@ -16,8 +16,8 @@ Below is a list of commands that are available in this plugin. Most of the time 
 
 ## TODO:
 - [ ] Make the resource pack automatically generated
-- [ ] Make a basic plugin
-- [ ] `/emoji` command
+- [x] Make a basic plugin
+- [x] `/emoji` command
 - [ ] Make the list of emojis automatically generated
 - [ ] `/emoji list` command
 - [ ] Replace the chat text with emojis
