@@ -41,29 +41,39 @@ public class Main {
             System.out.println("Total emojis found: " + emojiList.size());
 
             // Iterate over each emoji. Go to the page, then get the image, and shortcode.
-            for (int i = 1; i < emojiList.size(); i++) {
-                System.out.println("Getting emoji with index of " + i);
+            //TODO: change 1 - emojiList.size()
+            for (int i = 25; i < 35; i++) {
+
+                //TODO: Make a progress bar, and get remaining time
+                System.out.print("\rGetting emoji with index of " + i);
 
                 // Get the link to the current emoji, then scrape it
-                String currentEmojiLink = emojiList.get(i).select("td a").text();
-                System.out.println(currentEmojiLink);
-                Document currentEmojiPage = Jsoup.connect(currentEmojiLink).get();
+                String currentEmojiLink = emojiList.get(i).selectFirst("td a").attr("href");
+                Document currentEmojiPage = Jsoup.connect("https://www.emojibase.com" + currentEmojiLink).get();
 
                 // Get the shortcode
-                String shortcode = currentEmojiPage.select("table tbody tr td:nth-child(6)").text();
-                System.out.println(shortcode);
+                String shortcode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(6)").text();
 
-                // Get the image
+                // Get the image url
+                Elements images = currentEmojiPage.select("div.panel img");
+                String imageUrl = "";
+                if (emojiStyle == 1) imageUrl += images.get(3).attr("src"); // Twemoji
+                else if (emojiStyle == 2) imageUrl += images.get(2).attr("src"); // Apple
 
-                
-
-
+                // Save the emoji in the emojis list
+                Emoji emoji = new Emoji(shortcode, imageUrl);
+                emojis.add(emoji);
             }
 
 
         } catch (IOException e) {
-            System.out.println("Error when getting shortcodes:");
+            System.out.println("\nError whilst getting emojis:");
             e.printStackTrace();
+        }
+    
+        // Loop through all emojis
+        for (Emoji emoji : emojis) {
+            if (emoji.shortcode.equals("::")) //TODO: Remove the emojis from list
         }
     }
 

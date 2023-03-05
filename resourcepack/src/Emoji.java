@@ -2,17 +2,15 @@ package resourcepack.src;
 
 public class Emoji {
     
-    String name;
-    String shortcode;
-    String hexCode;
+    public String shortcode;
+    public String imageUrl;
 
     // Emoji constructor
-    public Emoji(String name, String shortcode, String unicode) {
+    public Emoji(String shortcode, String url) {
 
         // Assign all variables
-        this.name = name;
         this.shortcode = shortcode;
-        this.hexCode = unicode;
+        this.imageUrl = "https://www.emojibase.com" + url;
     }
 
 }
