@@ -1,19 +1,19 @@
 package resourcepack.src;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Main {
     
     public static void main(String[] args) {
-        
+
         System.out.println("Emoji resourcepack generator\n");
 
         // Ask for what emoji style they want
@@ -22,12 +22,16 @@ public class Main {
         System.out.println("2)\tApple");
         
         Scanner scanner = new Scanner(System.in);
-        int emojiStyle = scanner.nextInt();
+        int emojiStyleInput = scanner.nextInt();
         scanner.close();
 
+        // Set the emoji style (default is twemoji)
+        EmojiStyle emojiStyle = EmojiStyle.TWEMOJI;
+        if (emojiStyleInput == 2) emojiStyle = EmojiStyle.APPLE;
 
 
-        // Get the list of emojis, and their shortcode
+
+        // Get the list of emojis, their shortcode, and the url to the image
         System.out.println("Getting emojis\nThis could take a while.");
         ArrayList<Emoji> emojis = new ArrayList<Emoji>();
 
@@ -45,6 +49,7 @@ public class Main {
             for (int i = 25; i < 35; i++) {
 
                 //TODO: Make a progress bar, and get remaining time
+                //TODO: Use multi-threadding to spead up the process.
                 System.out.print("\rGetting emoji with index of " + i);
 
                 // Get the link to the current emoji, then scrape it
@@ -53,12 +58,13 @@ public class Main {
 
                 // Get the shortcode
                 String shortcode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(6)").text();
+                if (shortcode.equals("::")) continue;
 
                 // Get the image url
                 Elements images = currentEmojiPage.select("div.panel img");
                 String imageUrl = "";
-                if (emojiStyle == 1) imageUrl += images.get(3).attr("src"); // Twemoji
-                else if (emojiStyle == 2) imageUrl += images.get(2).attr("src"); // Apple
+                if (emojiStyle == EmojiStyle.TWEMOJI) imageUrl += images.get(3).attr("src"); // Twemoji
+                else if (emojiStyle == EmojiStyle.APPLE) imageUrl += images.get(2).attr("src"); // Apple
 
                 // Save the emoji in the emojis list
                 Emoji emoji = new Emoji(shortcode, imageUrl);
@@ -70,11 +76,43 @@ public class Main {
             System.out.println("\nError whilst getting emojis:");
             e.printStackTrace();
         }
-    
-        // Loop through all emojis
-        for (Emoji emoji : emojis) {
-            if (emoji.shortcode.equals("::")) //TODO: Remove the emojis from list
+
+
+        // Make the resourcepack root directory
+        String resourcePackFolder = "./Emojis";
+        if (emojiStyle == EmojiStyle.TWEMOJI) resourcePackFolder += " (Twemoji)";
+        else if (emojiStyle == EmojiStyle.APPLE) resourcePackFolder += " (Apple)";
+        File resourcePackRoot = new File(resourcePackFolder);
+        resourcePackRoot.mkdir();
+
+        // Make the mcmeta file
+        try {
+            File mcmetaFile = new File(resourcePackRoot, "pack.mcmeta");
+            mcmetaFile.createNewFile();
+            FileWriter fileWriter = new FileWriter(mcmetaFile);
+            fileWriter.write("{ \"pack\": { \"pack_format\": 9, \"description\": \"Emojis for Minecraft\" } }");
+            fileWriter.close();
+
+        } catch (Exception e) {
+            System.err.println("\nError while making mcmeta file:");
+            e.printStackTrace();
         }
+
+        // Make the assets and minecraft directories
+
+        //TODO: Make the pack.png file
+
+
+        // Download, then make the json for all the emojis
+        ArrayList<String> filePaths = new ArrayList<String>();
+        for (Emoji emoji : emojis) {
+            
+                        
+
+        }
+
+        // Generate all of the json for the emojis
+
     }
 
 }
