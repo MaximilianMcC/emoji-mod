@@ -99,19 +99,38 @@ public class Main {
         }
 
         // Make the assets and minecraft directories
+        File minecraftFolder = new File(resourcePackRoot, "/assets/minecraft");
+        minecraftFolder.mkdirs();
 
-        //TODO: Make the pack.png file
+        // Make the font folder, and json file inside
+        File fontFolder = new File(minecraftFolder, "font");
+        fontFolder.mkdir();
+        try {
+            File mcmetaFile = new File(resourcePackRoot, "default.json");
+            mcmetaFile.createNewFile();
+            FileWriter fileWriter = new FileWriter(mcmetaFile);
 
+            //TODO: Get a json library to make this easier
+            // Add the start of the json file
+            fileWriter.write("{ \"providers\": [");
 
-        // Download, then make the json for all the emojis
-        ArrayList<String> filePaths = new ArrayList<String>();
-        for (Emoji emoji : emojis) {
-            
-                        
+            // Add all of the emojis
+            for (Emoji emoji : emojis) {
+                
+                fileWriter.write(emoji.filename);
 
+            }
+
+            // Add the end of the json file
+            fileWriter.write("]}");
+
+            fileWriter.close();
+
+        } catch (Exception e) {
+            System.err.println("\nError while making default fonts file:");
+            e.printStackTrace();
         }
 
-        // Generate all of the json for the emojis
 
     }
 
