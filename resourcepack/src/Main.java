@@ -60,6 +60,9 @@ public class Main {
                 String shortcode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(6)").text();
                 if (shortcode.equals("::")) continue;
 
+                // Get the hex code
+                String hexCode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(2)").text().replace("U+", "");
+
                 // Get the image url
                 Elements images = currentEmojiPage.select("div.panel img");
                 String imageUrl = "";
@@ -67,7 +70,7 @@ public class Main {
                 else if (emojiStyle == EmojiStyle.APPLE) imageUrl += images.get(2).attr("src"); // Apple
 
                 // Save the emoji in the emojis list
-                Emoji emoji = new Emoji(shortcode, imageUrl);
+                Emoji emoji = new Emoji(shortcode, hexCode, imageUrl);
                 emojis.add(emoji);
             }
 
@@ -117,7 +120,7 @@ public class Main {
             // Add all of the emojis
             for (Emoji emoji : emojis) {
                 
-                fileWriter.write(emoji.filename);
+                // fileWriter.write();
 
             }
 
