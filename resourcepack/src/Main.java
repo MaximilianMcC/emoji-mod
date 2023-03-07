@@ -61,7 +61,7 @@ public class Main {
                 if (shortcode.equals("::")) continue;
 
                 // Get the hex code
-                String hexCode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(2)").text().replace("U+", "");
+                String hexCode = currentEmojiPage.selectFirst("table tbody tr td:nth-child(2)").text();
 
                 // Get the image url
                 Elements images = currentEmojiPage.select("div.panel img");
@@ -109,7 +109,7 @@ public class Main {
         File fontFolder = new File(minecraftFolder, "font");
         fontFolder.mkdir();
         try {
-            File mcmetaFile = new File(resourcePackRoot, "default.json");
+            File mcmetaFile = new File(fontFolder, "default.json");
             mcmetaFile.createNewFile();
             FileWriter fileWriter = new FileWriter(mcmetaFile);
 
@@ -118,15 +118,18 @@ public class Main {
             fileWriter.write("{ \"providers\": [");
 
             // Add all of the emojis
-            for (Emoji emoji : emojis) {
+            for (int i = 0; i < emojis.size(); i++) {
                 
-                // fileWriter.write();
+                // Add the current emoji json
+                String emojiJson = "{ \"type\": \"bitmap\", \"file\": \"minecraft:font/" + emojis.get(i).filename + ".png\", \"ascent\": 7, \"height\": 7, \"chars\": [ \"\\u" + emojis.get(i).hex + "\" ] }";
+                if (i < (emojis.size() - 1)) emojiJson += ",";
 
+                System.out.print("\rAdding emoji with index of " + i + " to resourcepack JSON");
+                fileWriter.write(emojiJson);
             }
 
             // Add the end of the json file
             fileWriter.write("]}");
-
             fileWriter.close();
 
         } catch (Exception e) {

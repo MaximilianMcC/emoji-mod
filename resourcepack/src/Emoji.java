@@ -13,7 +13,7 @@ public class Emoji {
         // Assign all variables
         this.shortcode = shortcode;
         this.imageUrl = "https://www.emojibase.com" + url;
-        this.hex = hex;
+        this.hex = hex.replace("U+", "");
         this.filename = shortcode.replaceAll(":", "");
     }
 
