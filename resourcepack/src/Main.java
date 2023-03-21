@@ -45,12 +45,10 @@ public class Main {
             System.out.println("Total emojis found: " + emojiList.size());
 
             // Iterate over each emoji. Go to the page, then get the image, and shortcode.
-            //TODO: change 1 - emojiList.size()
-            for (int i = 25; i < 35; i++) {
+            long startTime = System.currentTimeMillis();
+            long lastUpdateTime = startTime;
 
-                //TODO: Make a progress bar, and get remaining time
-                //TODO: Use multi-threadding to spead up the process.
-                System.out.print("\rGetting emoji with index of " + i);
+            for (int i = 25; i < emojiList.size(); i++) {
 
                 // Get the link to the current emoji, then scrape it
                 String currentEmojiLink = emojiList.get(i).selectFirst("td a").attr("href");
@@ -72,6 +70,20 @@ public class Main {
                 // Save the emoji in the emojis list
                 Emoji emoji = new Emoji(shortcode, hexCode, imageUrl);
                 emojis.add(emoji);
+
+
+
+                // Get the average time remaining
+                long currentTime = System.currentTimeMillis();
+                lastUpdateTime = currentTime;
+                long totalTime = currentTime - startTime;
+
+                double averageDownloadTime = totalTime / (i + 1.0);
+                double averageRemainingTime = averageDownloadTime * (emojiList.size() - i - 1);
+                
+                // Print it out
+                System.out.print("\rGetting emoji with index of " + i + " - Average time remaning: " + formatTime(averageRemainingTime));
+
             }
 
 
@@ -139,5 +151,20 @@ public class Main {
 
 
     }
+
+    public static String formatTime(double timeInMs) {
+
+        int seconds = (int)(timeInMs / 1000);
+        int minutes = (int)(seconds / 60);
+        int remainingSeconds = (int)(seconds % 60);
+        
+        if (minutes == 0) {
+            return remainingSeconds + " seconds";
+        } else {
+            if (minutes > 1) return minutes + " minutes, " + remainingSeconds + " seconds";
+            return minutes + " minute, " + remainingSeconds + " seconds";
+        }
+    }
+    
 
 }
