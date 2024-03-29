@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "emoji",
+	"version": "1.0",
+	"name": "Emoji Autocomplete",
+	"description": "Adds autocomplete to emojis in the chat.",
+	"authors": [
+		"Max McCarthy"
+	],
+	"contact": {
+		"homepage": "http://maximilian.co.nz/",
+		"sources": "https://github.com/MaximilianMcC/emoji-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/emoji/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"net.mtmb.Emoji"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
